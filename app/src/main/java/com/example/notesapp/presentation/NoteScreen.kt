@@ -66,7 +66,7 @@ fun NoteScreen (
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Black)
-                    .padding(top = 60.dp)
+                    .padding(top = 40.dp)
             ) {
                 Text(
                     text = "All notes",
@@ -88,7 +88,14 @@ fun NoteScreen (
                     textAlign = TextAlign.Center
                 )
 
-                IconButton(onClick = {
+
+
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.Bottom
+                ) {IconButton(onClick = {
                     onEvent(NotesEvent.SortNotes)
                 }) {
                     Icon(
@@ -98,8 +105,22 @@ fun NoteScreen (
                         tint = Purple80
                     )
                 }
+                    // Display the current sorting method
+
+                    Text(
+                        text = "Sorted by ${state.sortBy.value}",
+                        color = Color.White,
+                        fontSize = 13.sp,
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 15.dp)
+                    )}
+
             }
         },
+
+
 
         floatingActionButton = {
             FloatingActionButton(containerColor = Purple80,
@@ -119,6 +140,9 @@ fun NoteScreen (
                 .background(Black) // Set the background color of the entire screen to black
                 .padding(it)
         ) {
+
+
+
             // we will use Lazy Column because we can have many notes here
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2), // Set the number of columns for the grid
@@ -185,3 +209,20 @@ fun NoteItem(state: NoteState, index: Int, onEvent: (NotesEvent) -> Unit) {
         }
     }
 }
+
+
+
+//Column(
+//modifier = Modifier.fillMaxSize(),
+//verticalArrangement = Arrangement.Top
+//) {
+//    // Display the current sorting method
+//    Text(
+//        text = "Sorted by ${state.sortBy.value}",
+//        color = Color.White,
+//        fontSize = 16.sp,
+//        textAlign = TextAlign.Center,
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(vertical = 8.dp)
+//    )}

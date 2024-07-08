@@ -11,5 +11,6 @@ data class NoteState ( // round brackets as we have passed parameters here
     // we will use var for notes here as these need to be mutable otherwise read only will not allow us to copy or delete notes
     var notes : List<Note> = emptyList(),
     var title : MutableState<String> = mutableStateOf(""),
-    var disp : MutableState<String> = mutableStateOf("")
+    var disp : MutableState<String> = mutableStateOf(""),
+    var sortBy: MutableState<String> = mutableStateOf("Date Added")
 )

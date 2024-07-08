@@ -3,7 +3,6 @@ package com.example.notesapp.data
 
 import androidx.room.Dao
 import androidx.room.Delete
-import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
@@ -22,6 +21,6 @@ interface NoteDao {
     @Query("SELECT * FROM note ORDER BY title ASC")
     fun getOrderedByTitle() : Flow<List<Note>>  // Import Flow from kotlin coroutines
 
-    @Query("SELECT * FROM note ORDER BY dateAdded ASC")
+    @Query("SELECT * FROM note ORDER BY dateAdded DESC")
     fun getOrderedByDateAdded() : Flow<List<Note>>  // Import Flow from kotlin coroutines
 }

@@ -70,6 +70,11 @@ class NoteViewModel(
             NotesEvent.SortNotes -> {
                 // Handle sort notes event
                 isSortedByDateAdded.value = !isSortedByDateAdded.value
+                _state.update {
+                    it.copy(
+                        sortBy = mutableStateOf(if (isSortedByDateAdded.value) "Date Added" else "Title")
+                    )
+                }
             }
         }
     }
