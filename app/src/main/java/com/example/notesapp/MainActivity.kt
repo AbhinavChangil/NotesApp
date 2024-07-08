@@ -21,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import com.example.notesapp.data.NoteDatabase
 import com.example.notesapp.presentation.AddNoteScreen
+import com.example.notesapp.presentation.NoteDetailScreen
 import com.example.notesapp.presentation.NoteScreen
 import com.example.notesapp.presentation.NoteViewModel
 import com.example.notesapp.ui.theme.NotesAppTheme
@@ -63,6 +64,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("AddNoteScreen"){
                             AddNoteScreen(state = state, navController = navController, onEvent = viewModel::onEvent)
+                        }
+                        composable("NoteDetailScreen"){
+                            NoteDetailScreen(state = state, navController = navController, onEvent = viewModel::onEvent)
                         }
                     }
                 }

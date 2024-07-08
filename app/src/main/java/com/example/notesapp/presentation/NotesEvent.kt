@@ -12,4 +12,8 @@ sealed interface NotesEvent {
         var title : String,
         var disp: String
     ) : NotesEvent
+
+    data class UpdateNote (
+        var note : Note
+    ) : NotesEvent
 }

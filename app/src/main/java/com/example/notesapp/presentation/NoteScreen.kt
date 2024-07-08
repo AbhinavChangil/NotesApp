@@ -3,6 +3,7 @@ package com.example.notesapp.presentation
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,13 +26,19 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.List
 import androidx.compose.material.icons.rounded.Sort
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -42,13 +49,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.graphics.Color.Companion.Cyan
 import androidx.compose.ui.graphics.Color.Companion.Gray
+import androidx.compose.ui.graphics.Color.Companion.LightGray
+import androidx.compose.ui.graphics.Color.Companion.Magenta
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.navArgument
 import com.example.notesapp.ui.theme.Purple80
+import com.example.notesapp.data.Note
 
 
 
@@ -153,11 +166,19 @@ fun NoteScreen (
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
 
-                items(state.notes.size) {
+                items(state.notes.size) { index ->
                     NoteItem(
-                        state = state,
-                        index = it,
-                        onEvent = onEvent
+                        note = state.notes[index],
+                        onNoteClick = {
+                            state.title.value = state.notes[index].title
+                            state.disp.value = state.notes[index].disp
+                            navController.navigate("NoteDetailScreen")
+
+                            // Navigate to detail screen using NavController
+
+                        },
+                        onDeleteClick = {
+                            onEvent(NotesEvent.DeleteNote(state.notes[index])) }
                     )
                 }
             }
@@ -166,63 +187,71 @@ fun NoteScreen (
 }
 
 @Composable
-fun NoteItem(state: NoteState, index: Int, onEvent: (NotesEvent) -> Unit) {
+fun NoteItem(note: Note,
+             onNoteClick: () -> Unit,
+             onDeleteClick: () -> Unit) {
+
+//    var isExpanded by remember { mutableStateOf(false) }
+
     Row(modifier = Modifier
         .fillMaxWidth()
         .clip(RoundedCornerShape(10.dp))
         .background(Gray)
         .padding(start = 5.dp, top = 3.dp, bottom = 3.dp)
+        .clickable { onNoteClick() }
     )
 
 
 
     {
-        Column(modifier = Modifier
-            .weight(1f)
-            .height(200.dp)
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .height(200.dp)
         ) {
-            Text(text = state.notes.get(index = index).title,
+            Text(
+                text = note.title,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = Color.White
             )
             Spacer(modifier = Modifier.height(8.dp))
 
-            Text(text = state.notes.get(index = index).disp,
+            Text(
+                text = note.disp,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Normal,
                 color = Color.White
             )
         }
 
-        IconButton(onClick = { /*TODO*/
-            onEvent(NotesEvent.DeleteNote(
-                state.notes.get(index=index)
-            ))
-        }) {
+        IconButton(
+            onClick = onDeleteClick,
+            modifier = Modifier.size(25.dp)
+        // Change the tint color here
+        ){
 
             Icon(
                 imageVector = Icons.Rounded.Delete,
                 contentDescription = null,
-                modifier = Modifier.size(25.dp)
+                modifier = Modifier.size(25.dp),
+                tint = Black
             )
         }
     }
+
+    // Show NoteDetailView when isExpanded is true
+//    if (isExpanded) {
+////        NoteDetailScreen(
+////            note = state.notes[index],
+////            onClose = { isExpanded = false }
+////        )
+//
+//    }
+
 }
 
 
 
-//Column(
-//modifier = Modifier.fillMaxSize(),
-//verticalArrangement = Arrangement.Top
-//) {
-//    // Display the current sorting method
-//    Text(
-//        text = "Sorted by ${state.sortBy.value}",
-//        color = Color.White,
-//        fontSize = 16.sp,
-//        textAlign = TextAlign.Center,
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(vertical = 8.dp)
-//    )}
+
+

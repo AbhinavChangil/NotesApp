@@ -67,6 +67,17 @@ class NoteViewModel(
                     )
                 }
             }
+            is NotesEvent.UpdateNote -> {
+
+//                val updatedNote = event.note.copy(
+//                    title = state.value.title.value,
+//                    disp = state.value.disp.value
+//                )
+
+                viewModelScope.launch {
+                    dao.upsertNote(event.note)
+                }
+            }
             NotesEvent.SortNotes -> {
                 // Handle sort notes event
                 isSortedByDateAdded.value = !isSortedByDateAdded.value

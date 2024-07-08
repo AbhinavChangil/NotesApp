@@ -1,10 +1,13 @@
 package com.example.notesapp.data
 
 
+import android.app.usage.UsageEvents.Event
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
+import androidx.room.Update
 import androidx.room.Upsert
+import com.example.notesapp.presentation.NotesEvent
 import kotlinx.coroutines.flow.Flow
 
 @Dao
